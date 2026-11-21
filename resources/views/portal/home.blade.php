@@ -38,11 +38,11 @@
             <p class="text-xs text-slate-500 mt-1">Scan at the front desk for instant gym entry and view your attendance history.</p>
         </a>
 
-        <div class="bg-white rounded-xl border border-slate-200 p-5 shadow-sm">
-            <div class="text-xs font-semibold uppercase tracking-wider text-slate-400">Training</div>
-            <div class="mt-2 text-lg font-semibold text-slate-900">Classes & Plans</div>
-            <p class="text-xs text-slate-500 mt-1">Book group sessions and follow your trainer's custom workout & diet plans.</p>
-        </div>
+        <a href="{{ route('portal.classes') }}" class="block bg-white rounded-xl border border-slate-200 p-5 shadow-sm hover:border-emerald-400 transition">
+            <div class="text-xs font-semibold uppercase tracking-wider text-emerald-600">Training</div>
+            <div class="mt-2 text-lg font-semibold text-slate-900">Classes &amp; Bookings →</div>
+            <p class="text-xs text-slate-500 mt-1">Book group sessions, manage waitlists, and track your class credits.</p>
+        </a>
     </div>
 
     {{-- Active Branches --}}

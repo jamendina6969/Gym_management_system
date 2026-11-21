@@ -30,7 +30,7 @@
             <a href="{{ route('portal.home') }}" class="{{ request()->routeIs('portal.home') ? 'text-emerald-400 font-medium' : 'text-slate-300 hover:text-white' }}">Home</a>
             <a href="{{ route('portal.membership') }}" class="{{ request()->routeIs('portal.membership') ? 'text-emerald-400 font-medium' : 'text-slate-300 hover:text-white' }}">Membership &amp; Payments</a>
             <a href="{{ route('portal.qr-pass') }}" class="{{ request()->routeIs('portal.qr-pass') ? 'text-emerald-400 font-medium' : 'text-slate-300 hover:text-white' }}">My QR Pass</a>
-            <span class="text-slate-500 cursor-not-allowed" title="Coming in Phase 4">Classes</span>
+            <a href="{{ route('portal.classes') }}" class="{{ request()->routeIs('portal.classes') ? 'text-emerald-400 font-medium' : 'text-slate-300 hover:text-white' }}">Classes</a>
             <span class="text-slate-500 cursor-not-allowed" title="Coming in Phase 5">Workouts & Diet</span>
         </nav>
 
@@ -91,10 +91,10 @@
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"/></svg>
             <span>QR Pass</span>
         </a>
-        <div class="flex flex-col items-center justify-center gap-1 text-slate-400">
+        <a href="{{ route('portal.classes') }}" class="flex flex-col items-center justify-center gap-1 {{ request()->routeIs('portal.classes') ? 'text-emerald-600' : 'text-slate-500' }}">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
             <span>Classes</span>
-        </div>
+        </a>
         <a href="{{ route('profile.edit') }}" class="flex flex-col items-center justify-center gap-1 text-slate-500">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
             <span>Profile</span>

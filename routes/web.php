@@ -59,6 +59,10 @@ Route::prefix('admin')
         Route::view('/attendance', 'admin.attendance.index')
             ->middleware('permission:attendance.view')
             ->name('attendance.index');
+
+        Route::view('/classes', 'admin.classes.index')
+            ->middleware('permission:classes.view')
+            ->name('classes.index');
     });
 
 // Member Portal
@@ -69,6 +73,7 @@ Route::prefix('portal')
         Route::get('/', PortalHomeController::class)->name('home');
         Route::view('/membership', 'portal.membership')->name('membership');
         Route::get('/qr-pass', QrPassController::class)->name('qr-pass');
+        Route::view('/classes', 'portal.classes')->name('classes');
     });
 
 Route::middleware('auth')->group(function () {

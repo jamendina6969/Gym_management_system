@@ -113,6 +113,11 @@ class Member extends Model
         return $this->hasMany(Attendance::class)->latest('checked_in_at');
     }
 
+    public function bookings(): HasMany
+    {
+        return $this->hasMany(Booking::class)->latest('booked_at');
+    }
+
     public function approve(User $staff): void
     {
         $this->update([

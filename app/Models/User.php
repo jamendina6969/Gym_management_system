@@ -60,6 +60,11 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasOne(Member::class);
     }
 
+    public function trainer(): HasOne
+    {
+        return $this->hasOne(Trainer::class);
+    }
+
     public function isSuperAdmin(): bool
     {
         return $this->hasRole('super-admin');

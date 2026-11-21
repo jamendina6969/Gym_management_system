@@ -3,11 +3,14 @@
 namespace Database\Seeders;
 
 use App\Models\Branch;
+use App\Models\ClassSchedule;
+use App\Models\GymClass;
 use App\Models\Member;
 use App\Models\MembershipPlan;
 use App\Models\Payment;
 use App\Models\Setting;
 use App\Models\Subscription;
+use App\Models\Trainer;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
@@ -193,6 +196,66 @@ class DatabaseSeeder extends Seeder
             ]);
 
             $payment->markAsPaid($staff);
+        }
+
+        // Seed Trainer Profile + Sample Classes & Upcoming Schedules
+        $trainerProfile = Trainer::firstOrCreate(
+            ['user_id' => $trainer->id],
+            [
+                'branch_id' => $mainBranch->id,
+                'specialization' => 'HIIT & Functional Strength',
+                'certifications' => 'NASM-CPT, CrossFit L1',
+                'hourly_rate' => 800.00,
+                'is_active' => true,
+            ]
+        );
+
+        $hiit = GymClass::firstOrCreate(
+            ['branch_id' => $mainBranch->id, 'name' => 'HIIT Burn 45'],
+            [
+                'trainer_id' => $trainerProfile->id,
+                'category' => 'HIIT',
+                'description' => 'High-intensity interval training for fat loss and conditioning.',
+                'default_capacity' => 15,
+                'duration_minutes' => 45,
+                'is_active' => true,
+            ]
+        );
+
+        $yoga = GymClass::firstOrCreate(
+            ['branch_id' => $mainBranch->id, 'name' => 'Power Flow Yoga'],
+            [
+                'trainer_id' => $trainerProfile->id,
+                'category' => 'Yoga',
+                'description' => 'Mobility, core stability, and breathwork recovery flow.',
+                'default_capacity' => 20,
+                'duration_minutes' => 60,
+                'is_active' => true,
+            ]
+        );
+
+        if (ClassSchedule::count() === 0) {
+            ClassSchedule::create([
+                'gym_class_id' => $hiit->id,
+                'branch_id' => $mainBranch->id,
+                'trainer_id' => $trainerProfile->id,
+                'room' => 'Studio A',
+                'starts_at' => now()->addDay()->setTime(7, 30),
+                'ends_at' => now()->addDay()->setTime(8, 15),
+                'capacity' => 15,
+                'status' => 'scheduled',
+            ]);
+
+            ClassSchedule::create([
+                'gym_class_id' => $yoga->id,
+                'branch_id' => $mainBranch->id,
+                'trainer_id' => $trainerProfile->id,
+                'room' => 'Mind & Body Room',
+                'starts_at' => now()->addDays(2)->setTime(18, 0),
+                'ends_at' => now()->addDays(2)->setTime(19, 0),
+                'capacity' => 20,
+                'status' => 'scheduled',
+            ]);
         }
     }
 }
