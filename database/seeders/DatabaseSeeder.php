@@ -2,16 +2,22 @@
 
 namespace Database\Seeders;
 
+use App\Models\Attendance;
 use App\Models\Branch;
 use App\Models\ClassSchedule;
+use App\Models\DietPlan;
+use App\Models\Equipment;
 use App\Models\GymClass;
 use App\Models\Member;
 use App\Models\MembershipPlan;
 use App\Models\Payment;
+use App\Models\PlanAssignment;
+use App\Models\Product;
 use App\Models\Setting;
 use App\Models\Subscription;
 use App\Models\Trainer;
 use App\Models\User;
+use App\Models\WorkoutPlan;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 
@@ -255,6 +261,107 @@ class DatabaseSeeder extends Seeder
                 'ends_at' => now()->addDays(2)->setTime(19, 0),
                 'capacity' => 20,
                 'status' => 'scheduled',
+            ]);
+        }
+
+        // Seed Sample Workout & Diet Plans assigned to Demo Member
+        if (WorkoutPlan::count() === 0) {
+            $wp = WorkoutPlan::create([
+                'branch_id' => $mainBranch->id,
+                'trainer_id' => $trainerProfile->id,
+                'created_by' => $trainer->id,
+                'title' => '4-Week Lean Strength Foundation',
+                'goal' => 'Muscle Gain & Conditioning',
+                'difficulty' => 'intermediate',
+                'duration_weeks' => 4,
+            ]);
+            $wp->items()->createMany([
+                ['day_label' => 'Day 1 - Push', 'exercise_name' => 'Barbell Bench Press', 'sets' => 4, 'reps' => '8-10', 'rest_seconds' => 90, 'sort_order' => 1],
+                ['day_label' => 'Day 1 - Push', 'exercise_name' => 'Overhead Dumbbell Press', 'sets' => 3, 'reps' => '10-12', 'rest_seconds' => 60, 'sort_order' => 2],
+                ['day_label' => 'Day 2 - Pull', 'exercise_name' => 'Lat Pulldown', 'sets' => 4, 'reps' => '10-12', 'rest_seconds' => 60, 'sort_order' => 3],
+                ['day_label' => 'Day 3 - Legs', 'exercise_name' => 'Barbell Back Squat', 'sets' => 4, 'reps' => '6-8', 'rest_seconds' => 120, 'sort_order' => 4],
+            ]);
+
+            $dp = DietPlan::create([
+                'branch_id' => $mainBranch->id,
+                'trainer_id' => $trainerProfile->id,
+                'created_by' => $trainer->id,
+                'title' => 'High-Protein Daily Fuel',
+                'goal' => 'Lean Recomposition',
+                'daily_calories' => 2200,
+                'protein_grams' => 160,
+                'carbs_grams' => 230,
+                'fat_grams' => 65,
+            ]);
+            $dp->items()->createMany([
+                ['meal_time' => 'Breakfast', 'food_items' => '3 eggs, 1 cup oatmeal, 1 banana', 'calories' => 540, 'protein_grams' => 32, 'sort_order' => 1],
+                ['meal_time' => 'Lunch', 'food_items' => '200g grilled chicken breast, 1.5 cups rice, steamed veggies', 'calories' => 680, 'protein_grams' => 55, 'sort_order' => 2],
+                ['meal_time' => 'Post-Workout', 'food_items' => '1 scoop whey protein shake + apple', 'calories' => 220, 'protein_grams' => 26, 'sort_order' => 3],
+                ['meal_time' => 'Dinner', 'food_items' => '200g bangus/salmon, sweet potato, greens', 'calories' => 640, 'protein_grams' => 45, 'sort_order' => 4],
+            ]);
+
+            PlanAssignment::create([
+                'member_id' => $memberProfile->id,
+                'workout_plan_id' => $wp->id,
+                'diet_plan_id' => $dp->id,
+                'assigned_by' => $trainer->id,
+                'starts_at' => now()->toDateString(),
+                'ends_at' => now()->addWeeks(4)->toDateString(),
+                'status' => 'active',
+            ]);
+        }
+
+        // Seed Sample Equipment & Retail Products
+        if (Equipment::count() === 0) {
+            Equipment::create([
+                'branch_id' => $mainBranch->id,
+                'name' => 'Commercial Treadmill Pro #1',
+                'category' => 'Cardio',
+                'serial_number' => 'TM-2026-01',
+                'condition' => 'good',
+                'last_maintained_at' => now()->subDays(14)->toDateString(),
+            ]);
+            Equipment::create([
+                'branch_id' => $mainBranch->id,
+                'name' => 'Power Rack & Olympic Barbell Set',
+                'category' => 'Free Weights',
+                'serial_number' => 'PR-2026-01',
+                'condition' => 'good',
+            ]);
+        }
+
+        if (Product::count() === 0) {
+            Product::create([
+                'branch_id' => $mainBranch->id,
+                'name' => 'Whey Protein Single Shake',
+                'sku' => 'SUP-WHEY-01',
+                'category' => 'Supplements',
+                'price' => 120.00,
+                'cost' => 65.00,
+                'stock_quantity' => 25,
+                'low_stock_threshold' => 5,
+            ]);
+            Product::create([
+                'branch_id' => $mainBranch->id,
+                'name' => 'Electrolyte Sports Drink 500ml',
+                'sku' => 'BEV-ELEC-01',
+                'category' => 'Beverages',
+                'price' => 60.00,
+                'cost' => 30.00,
+                'stock_quantity' => 40,
+                'low_stock_threshold' => 10,
+            ]);
+        }
+
+        if (Attendance::count() === 0) {
+            Attendance::create([
+                'branch_id' => $mainBranch->id,
+                'member_id' => $memberProfile->id,
+                'checked_in_at' => now()->subHours(2),
+                'checked_out_at' => now()->subHour(),
+                'method' => 'qr',
+                'status' => 'allowed',
+                'checked_in_by' => $staff->id,
             ]);
         }
     }

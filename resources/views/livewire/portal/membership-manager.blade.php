@@ -109,7 +109,7 @@
                     <button wire:click="$set('showCheckoutModal', false)" class="text-slate-400 hover:text-slate-600">✕</button>
                 </div>
 
-                <form wire:submit="submitManualPayment" class="p-6 space-y-4 text-sm">
+                <div class="p-6 space-y-4 text-sm">
                     <div class="p-3.5 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-between">
                         <div>
                             <div class="font-semibold text-slate-900">{{ $selectedPlan->name }}</div>
@@ -117,6 +117,24 @@
                         </div>
                         <div class="text-lg font-bold text-emerald-700">{{ $currencySymbol }}{{ number_format((float) $selectedPlan->price, 2) }}</div>
                     </div>
+
+                    @if ($onlineGateways->isNotEmpty())
+                        <div class="space-y-2 pb-3 border-b border-slate-200">
+                            <div class="text-xs font-semibold uppercase tracking-wider text-emerald-700">Instant Online Payment</div>
+                            @foreach ($onlineGateways as $gw)
+                                <form method="POST" action="{{ route('portal.checkout', $selectedPlan) }}">
+                                    @csrf
+                                    <input type="hidden" name="driver" value="{{ $gw->driver }}">
+                                    <button type="submit" class="w-full py-2.5 px-4 rounded-xl bg-emerald-600 text-white text-xs font-semibold hover:bg-emerald-700 transition">
+                                        Pay Now with {{ $gw->display_name }} →
+                                    </button>
+                                </form>
+                            @endforeach
+                        </div>
+                        <div class="text-[11px] uppercase tracking-wider text-slate-400 font-semibold text-center">Or submit manual transfer proof</div>
+                    @endif
+
+                    <form wire:submit="submitManualPayment" class="space-y-4">
 
                     <div>
                         <label class="block text-xs font-medium text-slate-700 mb-1">Payment Method *</label>
@@ -149,9 +167,10 @@
 
                     <div class="pt-4 border-t border-slate-100 flex justify-end gap-2">
                         <button type="button" wire:click="$set('showCheckoutModal', false)" class="px-4 py-2 rounded-lg border border-slate-300 text-slate-700 text-sm font-medium">Cancel</button>
-                        <button type="submit" class="px-4 py-2 rounded-lg bg-emerald-600 text-white text-sm font-medium hover:bg-emerald-700">Submit Payment</button>
+                        <button type="submit" class="px-4 py-2 rounded-lg bg-slate-900 text-white text-sm font-medium hover:bg-slate-800">Submit Manual Payment</button>
                     </div>
                 </form>
+                </div>
             </div>
         </div>
     @endif

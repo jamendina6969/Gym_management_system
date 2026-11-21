@@ -7,6 +7,7 @@ use App\Models\Member;
 use App\Models\MembershipPlan;
 use App\Models\Payment;
 use App\Models\Subscription;
+use App\Services\Payments\PaymentGatewayManager;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
@@ -122,6 +123,7 @@ class MembershipManager extends Component
             'activeSubscription' => $member->activeSubscription()->with('plan')->first(),
             'plans' => $plans,
             'selectedPlan' => $selectedPlan,
+            'onlineGateways' => app(PaymentGatewayManager::class)->enabledOnlineGateways($member->home_branch_id),
             'currencySymbol' => config('app.currency_symbol', '₱'),
         ]);
     }

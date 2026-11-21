@@ -6,7 +6,9 @@ use App\Http\Controllers\Admin\ReportController;
 use App\Http\Controllers\Auth\MemberInviteController;
 use App\Http\Controllers\DashboardRedirectController;
 use App\Http\Controllers\InvoiceController;
+use App\Http\Controllers\PaymentWebhookController;
 use App\Http\Controllers\Portal\HomeController as PortalHomeController;
+use App\Http\Controllers\Portal\OnlineCheckoutController;
 use App\Http\Controllers\Portal\ProgramController as PortalProgramController;
 use App\Http\Controllers\Portal\QrPassController;
 use App\Http\Controllers\ProfileController;
@@ -20,6 +22,9 @@ Route::get('/', function () {
 // Walk-in Member Password Setup Invite
 Route::get('/invite/{token}', [MemberInviteController::class, 'show'])->name('invite.show');
 Route::post('/invite/{token}', [MemberInviteController::class, 'accept'])->name('invite.accept');
+
+// Payment Gateway Webhooks (CSRF-exempt, HMAC-signed)
+Route::post('/webhooks/payments/{driver}', [PaymentWebhookController::class, 'handle'])->name('webhooks.payments');
 
 Route::get('/dashboard', DashboardRedirectController::class)
     ->middleware(['auth', 'verified'])
@@ -83,6 +88,10 @@ Route::prefix('admin')
         Route::get('/reports/export/pdf', [ReportController::class, 'exportPdf'])
             ->middleware('permission:reports.export')
             ->name('reports.export-pdf');
+
+        Route::view('/settings', 'admin.settings.index')
+            ->middleware('permission:settings.manage')
+            ->name('settings.index');
     });
 
 // Member Portal
@@ -92,6 +101,9 @@ Route::prefix('portal')
     ->group(function () {
         Route::get('/', PortalHomeController::class)->name('home');
         Route::view('/membership', 'portal.membership')->name('membership');
+        Route::post('/checkout/{plan}', [OnlineCheckoutController::class, 'checkout'])->name('checkout');
+        Route::get('/checkout/success/{payment}', [OnlineCheckoutController::class, 'success'])->name('checkout.success');
+        Route::get('/checkout/cancel/{payment}', [OnlineCheckoutController::class, 'cancel'])->name('checkout.cancel');
         Route::get('/qr-pass', QrPassController::class)->name('qr-pass');
         Route::view('/classes', 'portal.classes')->name('classes');
         Route::get('/programs', PortalProgramController::class)->name('programs');

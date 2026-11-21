@@ -21,6 +21,10 @@ return Application::configure(basePath: dirname(__DIR__))
             'role_or_permission' => RoleOrPermissionMiddleware::class,
             'branch.context' => EnsureBranchContext::class,
         ]);
+
+        $middleware->validateCsrfTokens(except: [
+            'webhooks/*',
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //
