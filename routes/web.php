@@ -68,6 +68,10 @@ Route::prefix('admin')
         Route::view('/programs', 'admin.programs.index')
             ->middleware('permission:workouts.view|diets.view')
             ->name('programs.index');
+
+        Route::view('/inventory', 'admin.inventory.index')
+            ->middleware('permission:equipment.view|inventory.view')
+            ->name('inventory.index');
     });
 
 // Member Portal
