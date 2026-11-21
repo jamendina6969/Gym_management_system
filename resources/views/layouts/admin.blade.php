@@ -134,10 +134,13 @@
             <div>
                 <div class="px-3 mb-2 text-[11px] font-semibold uppercase tracking-wider text-slate-400">Insights & Config</div>
                 <div class="space-y-1">
-                    <div class="flex items-center justify-between px-3 py-2 rounded-lg text-slate-500 cursor-not-allowed">
-                        <span>Reports & Exports</span>
-                        <span class="text-[10px] px-1.5 py-0.5 rounded bg-slate-800 text-slate-400 font-mono">P7</span>
-                    </div>
+                    @can('reports.view')
+                    <a href="{{ route('admin.reports.index') }}"
+                       class="flex items-center gap-3 px-3 py-2 rounded-lg transition {{ request()->routeIs('admin.reports.*') ? 'bg-emerald-500/15 text-emerald-400 font-medium' : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}">
+                        <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+                        <span>Reports &amp; Exports</span>
+                    </a>
+                    @endcan
                     <div class="flex items-center justify-between px-3 py-2 rounded-lg text-slate-500 cursor-not-allowed">
                         <span>Settings & Gateways</span>
                         <span class="text-[10px] px-1.5 py-0.5 rounded bg-slate-800 text-slate-400 font-mono">P8</span>

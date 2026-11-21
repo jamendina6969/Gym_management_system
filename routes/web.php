@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\BranchSwitchController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
+use App\Http\Controllers\Admin\ReportController;
 use App\Http\Controllers\Auth\MemberInviteController;
 use App\Http\Controllers\DashboardRedirectController;
 use App\Http\Controllers\InvoiceController;
@@ -72,6 +73,16 @@ Route::prefix('admin')
         Route::view('/inventory', 'admin.inventory.index')
             ->middleware('permission:equipment.view|inventory.view')
             ->name('inventory.index');
+
+        Route::get('/reports', [ReportController::class, 'index'])
+            ->middleware('permission:reports.view')
+            ->name('reports.index');
+        Route::get('/reports/export/csv', [ReportController::class, 'exportCsv'])
+            ->middleware('permission:reports.export')
+            ->name('reports.export-csv');
+        Route::get('/reports/export/pdf', [ReportController::class, 'exportPdf'])
+            ->middleware('permission:reports.export')
+            ->name('reports.export-pdf');
     });
 
 // Member Portal
