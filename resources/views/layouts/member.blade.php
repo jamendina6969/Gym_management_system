@@ -31,7 +31,7 @@
             <a href="{{ route('portal.membership') }}" class="{{ request()->routeIs('portal.membership') ? 'text-emerald-400 font-medium' : 'text-slate-300 hover:text-white' }}">Membership &amp; Payments</a>
             <a href="{{ route('portal.qr-pass') }}" class="{{ request()->routeIs('portal.qr-pass') ? 'text-emerald-400 font-medium' : 'text-slate-300 hover:text-white' }}">My QR Pass</a>
             <a href="{{ route('portal.classes') }}" class="{{ request()->routeIs('portal.classes') ? 'text-emerald-400 font-medium' : 'text-slate-300 hover:text-white' }}">Classes</a>
-            <span class="text-slate-500 cursor-not-allowed" title="Coming in Phase 5">Workouts & Diet</span>
+            <a href="{{ route('portal.programs') }}" class="{{ request()->routeIs('portal.programs') ? 'text-emerald-400 font-medium' : 'text-slate-300 hover:text-white' }}">Workouts &amp; Diet</a>
         </nav>
 
         <div class="flex items-center gap-3">

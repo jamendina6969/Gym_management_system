@@ -118,6 +118,11 @@ class Member extends Model
         return $this->hasMany(Booking::class)->latest('booked_at');
     }
 
+    public function planAssignments(): HasMany
+    {
+        return $this->hasMany(PlanAssignment::class)->latest('starts_at');
+    }
+
     public function approve(User $staff): void
     {
         $this->update([

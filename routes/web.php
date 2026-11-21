@@ -6,6 +6,7 @@ use App\Http\Controllers\Auth\MemberInviteController;
 use App\Http\Controllers\DashboardRedirectController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\Portal\HomeController as PortalHomeController;
+use App\Http\Controllers\Portal\ProgramController as PortalProgramController;
 use App\Http\Controllers\Portal\QrPassController;
 use App\Http\Controllers\ProfileController;
 use App\Models\Member;
@@ -63,6 +64,10 @@ Route::prefix('admin')
         Route::view('/classes', 'admin.classes.index')
             ->middleware('permission:classes.view')
             ->name('classes.index');
+
+        Route::view('/programs', 'admin.programs.index')
+            ->middleware('permission:workouts.view|diets.view')
+            ->name('programs.index');
     });
 
 // Member Portal
@@ -74,6 +79,7 @@ Route::prefix('portal')
         Route::view('/membership', 'portal.membership')->name('membership');
         Route::get('/qr-pass', QrPassController::class)->name('qr-pass');
         Route::view('/classes', 'portal.classes')->name('classes');
+        Route::get('/programs', PortalProgramController::class)->name('programs');
     });
 
 Route::middleware('auth')->group(function () {
