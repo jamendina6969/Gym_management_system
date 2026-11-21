@@ -28,8 +28,8 @@
 
         <nav class="hidden md:flex items-center gap-6 text-sm">
             <a href="{{ route('portal.home') }}" class="{{ request()->routeIs('portal.home') ? 'text-emerald-400 font-medium' : 'text-slate-300 hover:text-white' }}">Home</a>
-            <span class="text-slate-500 cursor-not-allowed" title="Coming in Phase 2">Membership</span>
-            <span class="text-slate-500 cursor-not-allowed" title="Coming in Phase 3">My QR Pass</span>
+            <a href="{{ route('portal.membership') }}" class="{{ request()->routeIs('portal.membership') ? 'text-emerald-400 font-medium' : 'text-slate-300 hover:text-white' }}">Membership &amp; Payments</a>
+            <a href="{{ route('portal.qr-pass') }}" class="{{ request()->routeIs('portal.qr-pass') ? 'text-emerald-400 font-medium' : 'text-slate-300 hover:text-white' }}">My QR Pass</a>
             <span class="text-slate-500 cursor-not-allowed" title="Coming in Phase 4">Classes</span>
             <span class="text-slate-500 cursor-not-allowed" title="Coming in Phase 5">Workouts & Diet</span>
         </nav>
@@ -87,10 +87,10 @@
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
             <span>Home</span>
         </a>
-        <div class="flex flex-col items-center justify-center gap-1 text-slate-400">
+        <a href="{{ route('portal.qr-pass') }}" class="flex flex-col items-center justify-center gap-1 {{ request()->routeIs('portal.qr-pass') ? 'text-emerald-600' : 'text-slate-500' }}">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"/></svg>
             <span>QR Pass</span>
-        </div>
+        </a>
         <div class="flex flex-col items-center justify-center gap-1 text-slate-400">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
             <span>Classes</span>

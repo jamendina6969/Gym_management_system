@@ -46,6 +46,31 @@ class Branch extends Model
         return $this->hasMany(Setting::class);
     }
 
+    public function members(): HasMany
+    {
+        return $this->hasMany(Member::class, 'home_branch_id');
+    }
+
+    public function plans(): HasMany
+    {
+        return $this->hasMany(MembershipPlan::class);
+    }
+
+    public function subscriptions(): HasMany
+    {
+        return $this->hasMany(Subscription::class);
+    }
+
+    public function payments(): HasMany
+    {
+        return $this->hasMany(Payment::class);
+    }
+
+    public function attendances(): HasMany
+    {
+        return $this->hasMany(Attendance::class);
+    }
+
     public function scopeActive(Builder $query): Builder
     {
         return $query->where('is_active', true);

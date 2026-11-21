@@ -73,11 +73,39 @@
             <div>
                 <div class="px-3 mb-2 text-[11px] font-semibold uppercase tracking-wider text-slate-400">Operations</div>
                 <div class="space-y-1">
+                    @can('members.view')
+                    <a href="{{ route('admin.members.index') }}"
+                       class="flex items-center gap-3 px-3 py-2 rounded-lg transition {{ request()->routeIs('admin.members.*') ? 'bg-emerald-500/15 text-emerald-400 font-medium' : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}">
+                        <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                        <span>Members</span>
+                    </a>
+                    @endcan
+
+                    @can('plans.view')
+                    <a href="{{ route('admin.plans.index') }}"
+                       class="flex items-center gap-3 px-3 py-2 rounded-lg transition {{ request()->routeIs('admin.plans.*') ? 'bg-emerald-500/15 text-emerald-400 font-medium' : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}">
+                        <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                        <span>Membership Plans</span>
+                    </a>
+                    @endcan
+
+                    @can('payments.view')
+                    <a href="{{ route('admin.payments.index') }}"
+                       class="flex items-center gap-3 px-3 py-2 rounded-lg transition {{ request()->routeIs('admin.payments.*') ? 'bg-emerald-500/15 text-emerald-400 font-medium' : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}">
+                        <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+                        <span>Payments &amp; Billing</span>
+                    </a>
+                    @endcan
+
+                    @can('attendance.view')
+                    <a href="{{ route('admin.attendance.index') }}"
+                       class="flex items-center gap-3 px-3 py-2 rounded-lg transition {{ request()->routeIs('admin.attendance.*') ? 'bg-emerald-500/15 text-emerald-400 font-medium' : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}">
+                        <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"/></svg>
+                        <span>QR Check-in</span>
+                    </a>
+                    @endcan
+
                     @foreach ([
-                        ['label' => 'Members', 'phase' => 'P2'],
-                        ['label' => 'Plans & Subscriptions', 'phase' => 'P2'],
-                        ['label' => 'Payments & Billing', 'phase' => 'P2'],
-                        ['label' => 'QR Check-in', 'phase' => 'P3'],
                         ['label' => 'Trainers & Classes', 'phase' => 'P4'],
                         ['label' => 'Workout & Diet Plans', 'phase' => 'P5'],
                         ['label' => 'Equipment & Inventory', 'phase' => 'P6'],

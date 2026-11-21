@@ -3,7 +3,11 @@
 namespace Database\Seeders;
 
 use App\Models\Branch;
+use App\Models\Member;
+use App\Models\MembershipPlan;
+use App\Models\Payment;
 use App\Models\Setting;
+use App\Models\Subscription;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
@@ -90,7 +94,7 @@ class DatabaseSeeder extends Seeder
         $trainer->syncRoles(['trainer']);
         $trainer->branches()->syncWithoutDetaching([$mainBranch->id => ['is_primary' => true]]);
 
-        $member = User::firstOrCreate(
+        $memberUser = User::firstOrCreate(
             ['email' => 'member@ironpulse.gym'],
             [
                 'name' => 'Juan Dela Cruz',
@@ -100,6 +104,95 @@ class DatabaseSeeder extends Seeder
                 'is_active' => true,
             ]
         );
-        $member->syncRoles(['member']);
+        $memberUser->syncRoles(['member']);
+
+        // Default Membership Plans
+        $monthlyPlan = MembershipPlan::firstOrCreate(
+            ['slug' => 'monthly-standard'],
+            [
+                'branch_id' => $mainBranch->id,
+                'name' => 'Monthly Standard',
+                'description' => 'Full gym floor access at your home branch plus 8 group classes per month.',
+                'billing_cycle' => 'monthly',
+                'duration_days' => 30,
+                'price' => 1500.00,
+                'class_credits' => 8,
+                'access_scope' => 'single_branch',
+                'is_active' => true,
+            ]
+        );
+
+        MembershipPlan::firstOrCreate(
+            ['slug' => 'quarterly-saver'],
+            [
+                'branch_id' => $mainBranch->id,
+                'name' => 'Quarterly Saver',
+                'description' => '3-month commitment at a discounted rate with 30 class credits.',
+                'billing_cycle' => 'quarterly',
+                'duration_days' => 90,
+                'price' => 4000.00,
+                'class_credits' => 30,
+                'access_scope' => 'single_branch',
+                'is_active' => true,
+            ]
+        );
+
+        MembershipPlan::firstOrCreate(
+            ['slug' => 'all-access-vip-monthly'],
+            [
+                'branch_id' => null,
+                'name' => 'All-Access VIP Monthly',
+                'description' => 'Unlimited access to all IronPulse branches and unlimited group classes.',
+                'billing_cycle' => 'monthly',
+                'duration_days' => 30,
+                'price' => 2500.00,
+                'class_credits' => null,
+                'access_scope' => 'all_access',
+                'is_active' => true,
+            ]
+        );
+
+        // Seed Member Profile + Active Subscription + Paid Invoice for Demo Member
+        $memberProfile = Member::firstOrCreate(
+            ['user_id' => $memberUser->id],
+            [
+                'home_branch_id' => $mainBranch->id,
+                'waiver_accepted_at' => now(),
+                'status' => 'active',
+                'approved_at' => now(),
+                'approved_by' => $superAdmin->id,
+            ]
+        );
+
+        if ($memberProfile->subscriptions()->count() === 0) {
+            $sub = Subscription::create([
+                'member_id' => $memberProfile->id,
+                'membership_plan_id' => $monthlyPlan->id,
+                'branch_id' => $mainBranch->id,
+                'starts_at' => now()->toDateString(),
+                'ends_at' => now()->addDays(30)->toDateString(),
+                'price' => $monthlyPlan->price,
+                'amount_paid' => 0,
+                'remaining_class_credits' => $monthlyPlan->class_credits,
+                'status' => 'active',
+                'created_by' => $staff->id,
+            ]);
+
+            $payment = Payment::create([
+                'branch_id' => $mainBranch->id,
+                'member_id' => $memberProfile->id,
+                'subscription_id' => $sub->id,
+                'amount' => $monthlyPlan->price,
+                'payment_method' => 'gcash',
+                'gateway' => 'manual',
+                'reference_number' => 'GCASH-DEMO-001',
+                'status' => 'paid',
+                'paid_at' => now(),
+                'recorded_by' => $staff->id,
+                'verified_by' => $staff->id,
+            ]);
+
+            $payment->markAsPaid($staff);
+        }
     }
 }

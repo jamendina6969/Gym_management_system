@@ -13,25 +13,30 @@
                 <p class="text-slate-300 text-sm mt-1">Manage your membership, QR check-in pass, classes, and workout plans.</p>
             </div>
             <div class="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-white/10 border border-white/15 text-xs">
-                <span class="w-2 h-2 rounded-full bg-amber-400"></span>
-                <span>Membership setup arrives in Phase 2</span>
+                @if ($activeSubscription)
+                    <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+                    <span>{{ $activeSubscription->plan->name }} · {{ $activeSubscription->daysRemaining() }}d left</span>
+                @else
+                    <span class="w-2 h-2 rounded-full bg-amber-400"></span>
+                    <span>Status: {{ ucfirst($member?->status ?? 'pending') }}</span>
+                @endif
             </div>
         </div>
     </div>
 
     {{-- Quick Modules --}}
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        <div class="bg-white rounded-xl border border-slate-200 p-5 shadow-sm">
-            <div class="text-xs font-semibold uppercase tracking-wider text-slate-400">Membership</div>
-            <div class="mt-2 text-lg font-semibold text-slate-900">Plan & Renewals</div>
-            <p class="text-xs text-slate-500 mt-1">View active subscription, expiry countdown, and pay online via GCash, Maya, or card.</p>
-        </div>
+        <a href="{{ route('portal.membership') }}" class="block bg-white rounded-xl border border-slate-200 p-5 shadow-sm hover:border-emerald-400 transition">
+            <div class="text-xs font-semibold uppercase tracking-wider text-emerald-600">Membership</div>
+            <div class="mt-2 text-lg font-semibold text-slate-900">Plan &amp; Renewals →</div>
+            <p class="text-xs text-slate-500 mt-1">View active subscription, choose a plan, upload payment proof, and download PDF receipts.</p>
+        </a>
 
-        <div class="bg-white rounded-xl border border-slate-200 p-5 shadow-sm">
-            <div class="text-xs font-semibold uppercase tracking-wider text-slate-400">Check-in</div>
-            <div class="mt-2 text-lg font-semibold text-slate-900">Personal QR Pass</div>
+        <a href="{{ route('portal.qr-pass') }}" class="block bg-white rounded-xl border border-slate-200 p-5 shadow-sm hover:border-emerald-400 transition">
+            <div class="text-xs font-semibold uppercase tracking-wider text-emerald-600">Check-in</div>
+            <div class="mt-2 text-lg font-semibold text-slate-900">Personal QR Pass →</div>
             <p class="text-xs text-slate-500 mt-1">Scan at the front desk for instant gym entry and view your attendance history.</p>
-        </div>
+        </a>
 
         <div class="bg-white rounded-xl border border-slate-200 p-5 shadow-sm">
             <div class="text-xs font-semibold uppercase tracking-wider text-slate-400">Training</div>

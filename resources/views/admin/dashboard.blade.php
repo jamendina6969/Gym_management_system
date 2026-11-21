@@ -43,15 +43,19 @@
         </div>
 
         <div class="bg-white rounded-xl border border-slate-200 p-5 shadow-sm">
-            <div class="text-xs font-medium text-slate-500 uppercase tracking-wider">Registered Members</div>
+            <div class="text-xs font-medium text-slate-500 uppercase tracking-wider">Active Members</div>
             <div class="mt-2 text-3xl font-bold text-slate-900">{{ $stats['members'] }}</div>
-            <div class="mt-1 text-xs text-slate-500">Full directory coming in Phase 2</div>
+            <div class="mt-1 text-xs {{ ($stats['pending_members'] ?? 0) > 0 ? 'text-amber-600 font-medium' : 'text-slate-500' }}">
+                {{ $stats['pending_members'] ?? 0 }} pending approval
+            </div>
         </div>
 
         <div class="bg-white rounded-xl border border-slate-200 p-5 shadow-sm">
             <div class="text-xs font-medium text-slate-500 uppercase tracking-wider">Revenue (This Month)</div>
             <div class="mt-2 text-3xl font-bold text-slate-900">{{ config('app.currency_symbol', '₱') }}{{ number_format($stats['revenue_month'], 2) }}</div>
-            <div class="mt-1 text-xs text-slate-500">Timezone: {{ config('app.timezone') }}</div>
+            <div class="mt-1 text-xs {{ ($stats['pending_payments'] ?? 0) > 0 ? 'text-amber-600 font-medium' : 'text-slate-500' }}">
+                {{ $stats['pending_payments'] ?? 0 }} payments pending review
+            </div>
         </div>
     </div>
 

@@ -160,6 +160,7 @@ test('new self-registered users automatically receive the member role', function
         'email' => 'newmember@example.com',
         'password' => 'password',
         'password_confirmation' => 'password',
+        'accept_waiver' => '1',
     ])->assertRedirect(route('dashboard', absolute: false));
 
     $user = User::where('email', 'newmember@example.com')->firstOrFail();
